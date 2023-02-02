@@ -25,11 +25,15 @@ type Engine struct {
 
 	// Managers
 	inp *Inputs
+	cm  *Camera
+	ui  *GUI
 
 	player    *Player
 	anim_time float32
 
-	coke objs.Trigger
+	// Rand Shit may delete later
+	coke  objs.Trigger
+	ligma objs.Floor
 }
 
 var engine_lock = &sync.Mutex{}
@@ -41,10 +45,13 @@ func Get_Engine() *Engine {
 		defer engine_lock.Unlock()
 
 		if engine_instance == nil {
+
 			engine_instance = &Engine{
 				Should_Close: false,
 				player:       Get_Player(),
 				inp:          Get_Inputs(),
+				cm:           Get_Camera(),
+				ui:           Get_GUI(),
 				coke: objs.New_Trigger(
 					30,
 					400,
@@ -52,6 +59,12 @@ func Get_Engine() *Engine {
 					func() {
 						fmt.Println("Click")
 					},
+				),
+				ligma: objs.New_Floor(
+					rl.NewVector2(0, float32(W_HEIGHT)-100),
+					2000,
+					100,
+					20,
 				),
 			}
 		}
@@ -85,7 +98,9 @@ func (e *Engine) Update() {
 	e.player.Update(dt)
 
 	e.coke.Update(e.player)
+	e.cm.Update_Camera(e.player)
 
+	e.inp.Allow_Player(e.player)
 }
 
 func (e *Engine) Render() {
@@ -93,9 +108,31 @@ func (e *Engine) Render() {
 
 	rl.ClearBackground(rl.GetColor(0x333333FF))
 
-	e.coke.Render()
+	rl.BeginMode2D(e.cm.cam)
+
+	rl.DrawRectangle(
+		W_WIDTH+500,
+		500,
+		100,
+		150,
+		rl.Blue,
+	)
+
+	e.ligma.Render()
+
+	rl.DrawText(
+		"HTTPS://LTTSTORE.COM",
+		10,
+		1500,
+		20,
+		rl.GetColor(0xC73A03FF),
+	)
 
 	e.player.Render()
+
+	rl.EndMode2D()
+
+	e.ui.Render()
 
 	rl.EndDrawing()
 }

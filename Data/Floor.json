@@ -1,0 +1,24 @@
+{
+    "floors": [
+        {
+            "name": "F1",
+            "pos":    {
+                "x": 30,
+                "y": 30
+            },
+            "width": 20,
+            "height": 20,
+            "offset": 30
+        },
+        {
+            "name": "F2",
+            "pos":    {
+                "x": 40,
+                "y": 60
+            },
+            "width": 80,
+            "height": 120,
+            "offset": 2350
+        }
+    ]
+}
