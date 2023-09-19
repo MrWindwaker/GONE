@@ -1,6 +1,7 @@
 package gone
 
 import (
+	"fmt"
 	"sync"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -9,10 +10,10 @@ import (
 const PLAYER_SPEED int32 = 230
 
 var anims map[string]string = map[string]string{
-	"IDLE":  "Assets/Player/balancing.png",
-	"MOVE":  "Assets/Player/skip.png",
-	"DANCE": "Assets/Player/snap.png",
-	"NO":    "Assets/Player/hips.png",
+	"IDLE":  "balancing.png",
+	"MOVE":  "skip.png",
+	"DANCE": "snap.png",
+	"NO":    "hips.png",
 }
 
 type Player struct {
@@ -65,8 +66,12 @@ func Get_Player() *Player {
 
 func (p *Player) init() {
 	for name, path := range anims {
-		p.animations[name] = rl.LoadTexture(path)
+		pwd := fmt.Sprintf("Assets/Player/%s", path)
+
+		p.animations[name] = rl.LoadTexture(Get_Current_Dir(pwd))
 	}
+
+	fmt.Println("Is Dev", is_dev())
 
 	p.sprite = p.animations["IDLE"]
 	p.width = int(p.sprite.Width) / p.t_frame
@@ -91,7 +96,7 @@ func (p *Player) move(dt float32) {
 			p.change_direction(1)
 		}
 
-		if rl.IsKeyDown(rl.KeySpace) {
+		if rl.IsKeyDown(int32(p.inp["ACTION"])) {
 			p.change_animation("DANCE")
 			p.In_Action = true
 		}

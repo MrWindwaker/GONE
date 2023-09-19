@@ -10,10 +10,10 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func load_json_floors() objs.FloorsJson {
-	var f objs.FloorsJson
+func load_json_floors() []objs.FloorJson {
+	var f []objs.FloorJson
 
-	data_f, err := os.Open("Data/Floor.json")
+	data_f, err := os.Open(Get_Current_Dir("Data/Floor.json"))
 	if err != nil {
 		fmt.Println("Floor.json Not Found")
 	}
@@ -27,6 +27,8 @@ func load_json_floors() objs.FloorsJson {
 
 	json.Unmarshal(floor_data, &f)
 
+	fmt.Println("Floors: ", f)
+
 	return f
 }
 
@@ -34,14 +36,17 @@ func create_floor() map[string]objs.Floor {
 	fs := load_json_floors()
 	floor := make(map[string]objs.Floor)
 
-	for _, f := range fs.Floors {
+	for _, f := range fs {
 		floor[f.Name] = objs.New_Floor(
 			rl.NewVector2(float32(f.Pos.X), float32(f.Pos.Y)),
 			f.Width,
 			f.Height,
 			f.Offset,
+			f.Name,
 		)
 	}
+
+	fmt.Println("Floors: ", floor)
 
 	return floor
 }

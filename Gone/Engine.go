@@ -17,27 +17,32 @@ const ANIMATION_SPEED float32 = 1.0 / 12.0
 
 var W_FLAGS []uint32 = []uint32{
 	rl.FlagMsaa4xHint,
-	rl.FlagWindowResizable,
+	rl.FlagVsyncHint,
 }
 
 type Engine struct {
 	Should_Close bool
+	Settings     Settings
 
 	// Managers
 	inp *Inputs
 	cm  *Camera
 	ui  *GUI
+	sm  *SceneManager
 
 	player    *Player
 	anim_time float32
 
-	// Rand Shit may delete later
-	coke  objs.Trigger
-	ligma objs.Floor
+	fls    map[string]objs.Floor
+	curr_f string
 }
 
 var engine_lock = &sync.Mutex{}
 var engine_instance *Engine
+
+func is_dev() bool {
+	return engine_instance.Settings.Is_Dev
+}
 
 func Get_Engine() *Engine {
 	if engine_instance == nil {
@@ -52,20 +57,10 @@ func Get_Engine() *Engine {
 				inp:          Get_Inputs(),
 				cm:           Get_Camera(),
 				ui:           Get_GUI(),
-				coke: objs.New_Trigger(
-					30,
-					400,
-					rl.NewVector2(500, 500),
-					func() {
-						fmt.Println("Click")
-					},
-				),
-				ligma: objs.New_Floor(
-					rl.NewVector2(0, float32(W_HEIGHT)-100),
-					2000,
-					100,
-					20,
-				),
+				Settings:     Load_Settings(),
+				sm:           get_scene_manager(),
+				fls:          make(map[string]objs.Floor),
+				curr_f:       "F1",
 			}
 		}
 	}
@@ -74,14 +69,27 @@ func Get_Engine() *Engine {
 }
 
 func (e *Engine) Init() {
+
+	Check_Wall()
+	e.Settings = Load_Settings()
+
 	for _, f := range W_FLAGS {
 		rl.SetConfigFlags(f)
 	}
 
 	rl.InitWindow(W_WIDTH, W_HEIGHT, W_TITLE)
+	if !e.Settings.Is_Dev {
+		rl.SetExitKey(0)
+	}
+
+	e.fls = create_floor()
+
+	fmt.Println("Floors engines: ", e.fls)
 
 	e.player.init()
 	e.inp.Set_player_Inputs(e.player)
+
+	e.sm.Init()
 }
 
 func (e *Engine) Update() {
@@ -97,7 +105,6 @@ func (e *Engine) Update() {
 
 	e.player.Update(dt)
 
-	e.coke.Update(e.player)
 	e.cm.Update_Camera(e.player)
 
 	e.inp.Allow_Player(e.player)
@@ -118,8 +125,6 @@ func (e *Engine) Render() {
 		rl.Blue,
 	)
 
-	e.ligma.Render()
-
 	rl.DrawText(
 		"HTTPS://LTTSTORE.COM",
 		10,
@@ -128,7 +133,13 @@ func (e *Engine) Render() {
 		rl.GetColor(0xC73A03FF),
 	)
 
-	e.player.Render()
+	// Draw floor and background here
+	rl.DrawRectangle(500, 500, 1200, 300, rl.Gold)
+
+	e.sm.Render(e.player)
+
+	// Draw foreground Elements here
+	rl.DrawRectangle(500, 600, 1200, 30, rl.Blue)
 
 	rl.EndMode2D()
 

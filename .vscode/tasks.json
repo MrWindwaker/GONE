@@ -1,0 +1,20 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "go",
+			"label": "go: build Gone",
+			"command": "build",
+			"args": [
+				"-o",
+				"Gone.app/Contents/Gone/Game",
+				"main.go",
+			],
+			"problemMatcher": [
+				"$go"
+			],
+			"group": "build",
+			"detail": "cd /Users/mrwindwaker/Development/GONE; go build main.go"
+		}
+	]
+}

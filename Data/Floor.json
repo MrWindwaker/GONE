@@ -2,17 +2,17 @@
     "floors": [
         {
             "name": "F1",
-            "pos":    {
+            "pos": {
                 "x": 30,
                 "y": 30
             },
             "width": 20,
             "height": 20,
-            "offset": 30
+            "offset": 100
         },
         {
             "name": "F2",
-            "pos":    {
+            "pos": {
                 "x": 40,
                 "y": 60
             },

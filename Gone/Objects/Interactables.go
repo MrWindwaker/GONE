@@ -1,8 +1,6 @@
 package objects
 
 import (
-	"fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -33,8 +31,6 @@ func New_Interactable(pos rl.Vector2, width int, height int, key int, sc fn, col
 func (i *Interactable) run() {
 	if i.Active {
 		i.script()
-
-		fmt.Println("Done")
 	}
 }
 
@@ -48,14 +44,14 @@ func (i *Interactable) Get_Rec() rl.Rectangle {
 }
 
 func (i *Interactable) Update(p pl) {
-	if rl.CheckCollisionRecs(i.Get_Rec(), p.Get_Rec()) {
+	if rl.CheckCollisionRecs(i.Get_Rec(), p.Get_Collision()) {
 		i.Active = true
-
-		if rl.IsKeyPressed(int32(i.active_key)) {
-			i.run()
-		}
 	} else {
 		i.Active = false
+	}
+
+	if i.Active && rl.IsKeyPressed(int32(i.active_key)) {
+		i.run()
 	}
 }
 

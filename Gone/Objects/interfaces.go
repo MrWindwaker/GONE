@@ -14,4 +14,5 @@ type pl interface {
 	Get_Rec() rl.Rectangle
 	Doing_Action()
 	Finish_Action()
+	Get_Collision() rl.Rectangle
 }

@@ -5,10 +5,11 @@ import (
 )
 
 type Floor struct {
-	pos    rl.Vector2
-	width  int
-	height int
-	offset int
+	Pos    rl.Vector2
+	Width  int
+	Height int
+	Offset int
+	Name   string
 
 	cam_fix int
 }
@@ -30,31 +31,32 @@ type PosJson struct {
 	Y int `json:"y"`
 }
 
-func New_Floor(pos rl.Vector2, w int, h int, offset int) Floor {
+func New_Floor(pos rl.Vector2, w int, h int, offset int, name string) Floor {
 	return Floor{
-		pos:     pos,
-		width:   w,
-		height:  h,
-		offset:  offset,
+		Pos:     pos,
+		Width:   w,
+		Height:  h,
+		Offset:  offset,
 		cam_fix: 100,
+		Name:    name,
 	}
 }
 
 func (f *Floor) Get_Rec() rl.Rectangle {
 	return rl.NewRectangle(
-		f.pos.X,
-		f.pos.Y,
-		float32(f.width),
-		float32(f.height)+float32(f.cam_fix),
+		f.Pos.X,
+		f.Pos.Y,
+		float32(f.Width),
+		float32(f.Height)+float32(f.cam_fix),
 	)
 }
 
 func (f *Floor) Get_Collision() rl.Rectangle {
 	return rl.NewRectangle(
-		f.pos.X,
-		f.pos.Y+float32(f.offset),
-		float32(f.width),
-		float32(f.height)-float32(f.offset)+float32(f.cam_fix),
+		f.Pos.X,
+		f.Pos.Y+float32(f.Offset),
+		float32(f.Width),
+		float32(f.Height)-float32(f.Offset)+float32(f.cam_fix),
 	)
 }
 

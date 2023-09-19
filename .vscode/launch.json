@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch file",
+            "name": "Run Project",
             "type": "go",
             "request": "launch",
             "mode": "debug",
-            "program": "main.go"
+            "program": "main.go",
+            // Cunt
         }
-
     ]
 }

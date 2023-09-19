@@ -7,7 +7,12 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-var Player_Inputs map[string]int = make(map[string]int)
+var Player_Inputs map[string]int = map[string]int{
+	"LEFT":   rl.KeyA,
+	"RIGHT":  rl.KeyD,
+	"ACTION": rl.KeySpace,
+	"OPEN":   rl.KeyW,
+}
 
 type Inputs struct{}
 
@@ -40,9 +45,7 @@ func Get_Inputs() *Inputs {
 func (i *Inputs) Set_player_Inputs(p *Player) {
 	// Check if controller is pluged in
 
-	// keyboard
-	Player_Inputs["LEFT"] = rl.KeyA
-	Player_Inputs["RIGHT"] = rl.KeyD
+	// Default Keyboard
 
 	p.inp = Player_Inputs
 }
