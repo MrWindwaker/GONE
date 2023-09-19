@@ -71,8 +71,6 @@ func (p *Player) init() {
 		p.animations[name] = rl.LoadTexture(Get_Current_Dir(pwd))
 	}
 
-	fmt.Println("Is Dev", is_dev())
-
 	p.sprite = p.animations["IDLE"]
 	p.width = int(p.sprite.Width) / p.t_frame
 	p.height = int(p.sprite.Height)

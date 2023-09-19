@@ -27,8 +27,6 @@ func load_json_floors() []objs.FloorJson {
 
 	json.Unmarshal(floor_data, &f)
 
-	fmt.Println("Floors: ", f)
-
 	return f
 }
 
@@ -45,8 +43,6 @@ func create_floor() map[string]objs.Floor {
 			f.Name,
 		)
 	}
-
-	fmt.Println("Floors: ", floor)
 
 	return floor
 }

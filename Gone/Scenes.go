@@ -31,7 +31,7 @@ func get_scene_manager() *SceneManager {
 }
 
 func (sm *SceneManager) Init() {
-
+	// Load Scene from data
 }
 
 func (sm *SceneManager) Render(pl *Player) {

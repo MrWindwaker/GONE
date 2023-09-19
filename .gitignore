@@ -3,3 +3,5 @@ Game
 
 Make
 *.app
+
+.DS_Store

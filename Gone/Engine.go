@@ -1,7 +1,6 @@
 package gone
 
 import (
-	"fmt"
 	"sync"
 
 	objs "wasm/game/Gone/Objects"
@@ -81,10 +80,6 @@ func (e *Engine) Init() {
 	if !e.Settings.Is_Dev {
 		rl.SetExitKey(0)
 	}
-
-	e.fls = create_floor()
-
-	fmt.Println("Floors engines: ", e.fls)
 
 	e.player.init()
 	e.inp.Set_player_Inputs(e.player)

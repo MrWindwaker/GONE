@@ -14,7 +14,14 @@ var Player_Inputs map[string]int = map[string]int{
 	"OPEN":   rl.KeyW,
 }
 
-type Inputs struct{}
+const (
+	Keyboard   = "KY"
+	Controller = "CN"
+)
+
+type Inputs struct {
+	input_type string
+}
 
 var inps []int = []int{
 	rl.KeyW,
@@ -42,12 +49,19 @@ func Get_Inputs() *Inputs {
 	return input_instance
 }
 
-func (i *Inputs) Set_player_Inputs(p *Player) {
+func (i *Inputs) Check_For_Controller() {
 	// Check if controller is pluged in
 
 	// Default Keyboard
+	if i.input_type != Keyboard {
 
-	p.inp = Player_Inputs
+	}
+}
+
+func (i *Inputs) Set_player_Inputs(p *Player) {
+	if !rl.IsGamepadAvailable(0) {
+		p.inp = Player_Inputs
+	} // else set gamepad controller
 }
 
 func (i *Inputs) Allow_Player(p *Player) {

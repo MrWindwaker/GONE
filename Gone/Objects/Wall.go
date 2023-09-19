@@ -15,8 +15,8 @@ type Wall struct {
 	Height int        `json:"height"`
 }
 
-func Get_A_Wall() Wall {
-	var w Wall
+func Get_A_Wall() []Wall {
+	var w []Wall
 
 	data_w, err := os.Open("Data/Walls.json")
 	if err != nil {

@@ -14,8 +14,10 @@ type Floor struct {
 	cam_fix int
 }
 
-type FloorsJson struct {
-	Floors []FloorJson `json:"floors"`
+func Get_A_Floor() []Floor {
+	var fl []Floor
+
+	return fl
 }
 
 type FloorJson struct {
