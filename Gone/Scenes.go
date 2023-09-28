@@ -1,12 +1,13 @@
 package gone
 
 import (
+	"fmt"
 	"sync"
 	objects "wasm/game/Gone/Objects"
 )
 
 type Scene struct {
-	flrs objects.Floor
+	flrs []objects.Floor
 }
 
 type SceneManager struct {
@@ -32,6 +33,7 @@ func get_scene_manager() *SceneManager {
 
 func (sm *SceneManager) Init() {
 	// Load Scene from data
+	fmt.Println(create_floor())
 }
 
 func (sm *SceneManager) Render(pl *Player) {

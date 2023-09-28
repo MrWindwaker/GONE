@@ -3,7 +3,6 @@
 ## Floor
 - Make floors apper from json file
 - Make walls apper from json file
-- ? Gravity
 
 ## Walls
 - Repel Player when collision is detected
@@ -19,4 +18,13 @@
 - Change current scene with another
 - Load wall and floor from scene walls and floor var
 
+## NPC 
+- Create a function that allow triggers
+- Alllow it to be interactable
+
 *******************************************************
+
+## Crete a game document
+## Make a story
+
+✅

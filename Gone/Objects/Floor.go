@@ -20,6 +20,10 @@ func Get_A_Floor() []Floor {
 	return fl
 }
 
+type FJSON struct {
+	Floors []FloorJson `json:"floors"`
+}
+
 type FloorJson struct {
 	Name   string  `json:"name"`
 	Pos    PosJson `json:"pos"`

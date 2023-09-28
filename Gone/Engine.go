@@ -34,6 +34,10 @@ type Engine struct {
 
 	fls    map[string]objs.Floor
 	curr_f string
+
+	// Delete later
+	fl map[string]objs.Floor
+	np objs.NPC
 }
 
 var engine_lock = &sync.Mutex{}
@@ -68,8 +72,6 @@ func Get_Engine() *Engine {
 }
 
 func (e *Engine) Init() {
-
-	Check_Wall()
 	e.Settings = Load_Settings()
 
 	for _, f := range W_FLAGS {
@@ -85,6 +87,8 @@ func (e *Engine) Init() {
 	e.inp.Set_player_Inputs(e.player)
 
 	e.sm.Init()
+	e.fl = create_floor()
+	e.np = objs.Create_NPC("Assets/NPC/mercy.jpg", 45, 300)
 }
 
 func (e *Engine) Update() {
@@ -129,12 +133,14 @@ func (e *Engine) Render() {
 	)
 
 	// Draw floor and background here
-	rl.DrawRectangle(500, 500, 1200, 300, rl.Gold)
+	for _, f := range e.fl {
+		rl.DrawRectangle(int32(f.Pos.X), int32(f.Pos.Y), int32(f.Width), int32(f.Height), rl.Gold)
+	}
 
+	rl.DrawTexture(e.np.Sprite, int32(e.np.Pos.X), int32(e.np.Pos.Y), rl.White)
 	e.sm.Render(e.player)
 
 	// Draw foreground Elements here
-	rl.DrawRectangle(500, 600, 1200, 30, rl.Blue)
 
 	rl.EndMode2D()
 
@@ -145,6 +151,7 @@ func (e *Engine) Render() {
 
 func (e *Engine) Close() {
 	e.player.Close()
+	e.np.Unload()
 
 	rl.CloseWindow()
 }
