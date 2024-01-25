@@ -3,22 +3,13 @@
         {
             "name": "F1",
             "pos": {
-                "x": 500,
-                "y": 30
+                "x": 45,
+                "y": 500
             },
-            "width": 20,
-            "height": 20,
-            "offset": 100
-        },
-        {
-            "name": "F2",
-            "pos": {
-                "x": 40,
-                "y": 400
-            },
-            "width": 80,
-            "height": 120,
-            "offset": 100
+            "width": 2000,
+            "height": 200,
+            "offset": 10,
+            "color": "0x333333FF"
         }
     ]
 }

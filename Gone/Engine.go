@@ -8,11 +8,10 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-const W_WIDTH int32 = 1280
-const W_HEIGHT int32 = 720
 const W_TITLE string = "GONE"
 
-const ANIMATION_SPEED float32 = 1.0 / 12.0
+const ANIMATION_SPEED float32 = 1.0 / 12.3
+const BG_ANIM float32 = 1.0 / 9.0
 
 var W_FLAGS []uint32 = []uint32{
 	rl.FlagMsaa4xHint,
@@ -38,6 +37,10 @@ type Engine struct {
 	// Delete later
 	fl map[string]objs.Floor
 	np objs.NPC
+	bg objs.BackgroundAnimted
+
+	W_WIDTH  int
+	W_HEIGHT int
 }
 
 var engine_lock = &sync.Mutex{}
@@ -78,7 +81,20 @@ func (e *Engine) Init() {
 		rl.SetConfigFlags(f)
 	}
 
-	rl.InitWindow(W_WIDTH, W_HEIGHT, W_TITLE)
+	rl.InitWindow(20, 20, W_TITLE)
+
+	e.W_WIDTH = rl.GetMonitorWidth(0)
+	e.W_HEIGHT = rl.GetMonitorHeight(0)
+
+	rl.SetWindowPosition(0, 0)
+	rl.SetWindowSize(int(e.W_WIDTH), int(e.W_HEIGHT))
+	rl.SetTargetFPS(60)
+	rl.ToggleFullscreen()
+
+	if !is_dev() {
+		rl.SetExitKey(0)
+	}
+
 	if !e.Settings.Is_Dev {
 		rl.SetExitKey(0)
 	}
@@ -87,6 +103,11 @@ func (e *Engine) Init() {
 	e.inp.Set_player_Inputs(e.player)
 
 	e.sm.Init()
+
+	e.bg = objs.BackgroundAnimted{
+		Texture:     rl.LoadTexture("Assets/Backgrounds/city_night/city_full.png"),
+		Is_Animated: false,
+	}
 	e.fl = create_floor()
 	e.np = objs.Create_NPC("Assets/NPC/mercy.jpg", 45, 300)
 }
@@ -98,13 +119,17 @@ func (e *Engine) Update() {
 	e.anim_time += dt
 
 	if e.anim_time >= ANIMATION_SPEED {
+
+		e.bg.Animate()
+
 		e.anim_time = 0
 		e.player.animate()
+
 	}
 
 	e.player.Update(dt)
 
-	e.cm.Update_Camera(e.player)
+	e.cm.Update_Camera(e.player, e.W_WIDTH, e.W_HEIGHT)
 
 	e.inp.Allow_Player(e.player)
 }
@@ -114,10 +139,12 @@ func (e *Engine) Render() {
 
 	rl.ClearBackground(rl.GetColor(0x333333FF))
 
+	e.bg.Render()
+
 	rl.BeginMode2D(e.cm.cam)
 
 	rl.DrawRectangle(
-		W_WIDTH+500,
+		int32(e.W_WIDTH+500),
 		500,
 		100,
 		150,
@@ -125,26 +152,29 @@ func (e *Engine) Render() {
 	)
 
 	rl.DrawText(
-		"HTTPS://LTTSTORE.COM",
+		"Arturo Was Here",
 		10,
 		1500,
 		20,
 		rl.GetColor(0xC73A03FF),
 	)
 
-	// Draw floor and background here
+	// Draw floor
 	for _, f := range e.fl {
-		rl.DrawRectangle(int32(f.Pos.X), int32(f.Pos.Y), int32(f.Width), int32(f.Height), rl.Gold)
+		f.Render()
 	}
 
-	rl.DrawTexture(e.np.Sprite, int32(e.np.Pos.X), int32(e.np.Pos.Y), rl.White)
 	e.sm.Render(e.player)
 
 	// Draw foreground Elements here
-
+	//rl.DrawTexture(e.np.Sprite, int32(e.np.Pos.X), 550, rl.White)
 	rl.EndMode2D()
 
 	e.ui.Render()
+
+	if is_dev() {
+		rl.DrawFPS(20, 20)
+	}
 
 	rl.EndDrawing()
 }
@@ -152,6 +182,8 @@ func (e *Engine) Render() {
 func (e *Engine) Close() {
 	e.player.Close()
 	e.np.Unload()
+
+	rl.UnloadTexture(e.bg.Texture)
 
 	rl.CloseWindow()
 }

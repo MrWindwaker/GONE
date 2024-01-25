@@ -56,7 +56,7 @@ func Get_Player() *Player {
 				c_frame:    0,
 				direction:  -1,
 				no_key:     false,
-				Allow_KEY:  false,
+				Allow_KEY:  true,
 			}
 		}
 	}

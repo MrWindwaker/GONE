@@ -10,6 +10,7 @@ type Floor struct {
 	Height int
 	Offset int
 	Name   string
+	Color  int
 
 	cam_fix int
 }
@@ -30,6 +31,7 @@ type FloorJson struct {
 	Width  int     `json:"width"`
 	Height int     `json:"height"`
 	Offset int     `json:"offset"`
+	Color  string  `json:"color"`
 }
 
 type PosJson struct {
@@ -37,7 +39,7 @@ type PosJson struct {
 	Y int `json:"y"`
 }
 
-func New_Floor(pos rl.Vector2, w int, h int, offset int, name string) Floor {
+func New_Floor(pos rl.Vector2, w int, h int, offset int, name string, color int) Floor {
 	return Floor{
 		Pos:     pos,
 		Width:   w,
@@ -45,6 +47,7 @@ func New_Floor(pos rl.Vector2, w int, h int, offset int, name string) Floor {
 		Offset:  offset,
 		cam_fix: 100,
 		Name:    name,
+		Color:   color,
 	}
 }
 
@@ -69,11 +72,6 @@ func (f *Floor) Get_Collision() rl.Rectangle {
 func (f *Floor) Render() {
 	rl.DrawRectangleRec(
 		f.Get_Rec(),
-		rl.Red,
-	)
-
-	rl.DrawRectangleRec(
-		f.Get_Collision(),
-		rl.GetColor(0xFFD70088),
+		rl.GetColor(uint(f.Color)),
 	)
 }

@@ -33,27 +33,27 @@ func Get_Camera() *Camera {
 	return camera_instance
 }
 
-func (c *Camera) Update_Camera(p *Player) {
+func (c *Camera) Update_Camera(p *Player, w, h int) {
 
 	bbox := rl.Vector2{X: 0.3, Y: 0.3}
 
 	bboxMin := rl.GetScreenToWorld2D(
 		rl.NewVector2(
-			(1-bbox.X)*0.5*float32(W_WIDTH),
-			(1-bbox.Y)*0.5*float32(W_HEIGHT),
+			(1-bbox.X)*0.5*float32(w),
+			(1-bbox.Y)*0.5*float32(h),
 		),
 		c.cam,
 	)
 	bboxMax := rl.GetScreenToWorld2D(
 		rl.NewVector2(
-			(1+bbox.X)*0.5*float32(W_WIDTH),
-			(1+bbox.Y)*0.5*float32(W_HEIGHT),
+			(1+bbox.X)*0.5*float32(w),
+			(1+bbox.Y)*0.5*float32(h),
 		),
 		c.cam,
 	)
 	c.cam.Offset = rl.NewVector2(
-		(1-bbox.X)*0.5*float32(W_WIDTH),
-		(1-bbox.Y)*0.5*float32(W_HEIGHT),
+		(1-bbox.X)*0.5*float32(w),
+		(1-bbox.Y)*0.5*float32(h),
 	)
 
 	if p.pos.X < bboxMin.X {

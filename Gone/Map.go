@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strconv"
 	objs "wasm/game/Gone/Objects"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -35,12 +36,16 @@ func create_floor() map[string]objs.Floor {
 	floor := make(map[string]objs.Floor)
 
 	for _, f := range fs.Floors {
+
+		c, _ := strconv.Atoi(f.Color)
+
 		floor[f.Name] = objs.New_Floor(
 			rl.NewVector2(float32(f.Pos.X), float32(f.Pos.Y)),
 			f.Width,
 			f.Height,
 			f.Offset,
 			f.Name,
+			c,
 		)
 	}
 

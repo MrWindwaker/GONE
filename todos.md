@@ -22,6 +22,9 @@
 - Create a function that allow triggers
 - Alllow it to be interactable
 
+## Camera Boundry
+- Make a boundary so the camera can´t move
+
 *******************************************************
 
 ## Crete a game document
